@@ -1,0 +1,35 @@
+{
+  "name": "gs-sdet-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:dev": "playwright test --project=dev",
+    "test:prod": "playwright test --project=prod",
+    "typecheck": "tsc --noEmit",
+    "lint:tests": "eslint \"tests/**/*.ts\" --max-warnings=0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akteivias/GS-SDET-Challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Akteivias/GS-SDET-Challenge/issues"
+  },
+  "homepage": "https://github.com/Akteivias/GS-SDET-Challenge#readme",
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "24.19.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "^10.12.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.71.1",
+    "yaml": "2.9.1"
+  }
+}

@@ -1,0 +1,16 @@
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Generated test reports (keep submission snapshot)
+reports/*
+!reports/submission/
+
+# OS / editor / challenge brief files not part of the submission
+.DS_Store
+.vscode/
+SDET_Take_Home_Challenge.md
