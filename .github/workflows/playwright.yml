@@ -157,6 +157,7 @@ jobs:
   deploy-pages:
     name: Deploy to GitHub Pages
     needs: assemble-pages
+    if: ${{ always() && !cancelled() && needs.assemble-pages.result == 'success' }}
     runs-on: ubuntu-24.04
     permissions:
       pages: write
