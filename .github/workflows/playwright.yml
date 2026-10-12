@@ -101,3 +101,73 @@ jobs:
         with:
           name: playwright-report-prod
           path: reports/test-prod/
+
+  assemble-pages:
+    name: Assemble Pages site
+    needs: [test-dev, test-prod]
+    if: ${{ always() && !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download dev report artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: playwright-report-dev
+          path: site/dev
+
+      - name: Download prod report artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: playwright-report-prod
+          path: site/prod
+
+      - name: Generate minimal landing page
+        run: |
+          mkdir -p site
+          cat << 'EOF' > site/index.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>User Management API v1.0 — Playwright Test Reports</title>
+          </head>
+          <body>
+            <h1>User Management API v1.0 — Playwright Test Reports</h1>
+            <p>Static Playwright HTML test reports for the User Management API across dev and prod environments.</p>
+            <ul>
+              <li><a href="./dev/">Dev Environment Report</a></li>
+              <li><a href="./prod/">Prod Environment Report</a></li>
+            </ul>
+            <p><strong>Note:</strong> Current failing tests expose documented API contract discrepancies. See <a href="https://github.com/Akteivias/GS-SDET-Challenge/blob/main/BUGS.md">BUGS.md</a> for details and contract references.</p>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: assemble-pages
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

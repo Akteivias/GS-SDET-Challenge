@@ -5,19 +5,37 @@ End-to-end API contract tests for the User Management API, built with TypeScript
 ## Test suite baseline & known application defects
 
 The test suite consists of **80 tests defined across 10 spec files**:
+
 - **Dev environment**: 41 tests (includes cross-namespace isolation tests).
 - **Prod environment**: 39 tests (`environment-isolation.spec.ts` is excluded because it evaluates cross-namespace isolation within a single instance).
+
+### Published reports
+
+The test suite publishes static Playwright HTML reports for both environments to GitHub Pages on every push to `main`:
+
+- **Report landing page:** <https://akteivias.github.io/GS-SDET-Challenge/>
+- **Dev report:** <https://akteivias.github.io/GS-SDET-Challenge/dev/>
+- **Prod report:** <https://akteivias.github.io/GS-SDET-Challenge/prod/>
+
+These are static Playwright HTML reports reflecting the latest test execution on `main`. Because the suite strictly asserts the authoritative OpenAPI contract, published reports will show test failures caused by documented application defects ([BUG-001 through BUG-005](./BUGS.md)).
+
+As an alternate access method, raw report artifacts (`playwright-report-dev` and `playwright-report-prod`) can also be downloaded directly from the workflow summary page of each GitHub Actions run.
 
 ### Known defect outcomes
 
 Tests in this suite assert the authoritative OpenAPI contract (`sdet_challenge_api.yml`). The current local baseline exits nonzero because contract assertions expose documented product defects. If the application is fixed, these tests are expected to pass.
 
 Documented application defects (see [`BUGS.md`](./BUGS.md) for contract citations and reproduction steps):
+
 - **BUG-001**: `PUT /users/{email}` reports updated values in response body, but subsequent `GET` returns original resource state (`dev`, `prod`).
 - **BUG-002**: `GET /users/{email}` for a missing or deleted user returns HTTP 500 instead of 404 (`dev`, `prod`).
 - **BUG-003**: `POST /users` with duplicate email returns HTTP 500 instead of 409 (`dev`, `prod`).
 - **BUG-004**: `DELETE /users/{email}` accepts missing or invalid Authentication tokens with HTTP 204 in `dev`; `prod` conforms with HTTP 401.
 - **BUG-005**: `POST /users` with invalid email format returns 201 Created and persists invalid record (`dev`, `prod`).
+
+### Bug report
+
+The bugs report file is being tracked on [`BUGS.md`](./BUGS.md)
 
 ## Prerequisites
 
