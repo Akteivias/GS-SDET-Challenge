@@ -4,10 +4,10 @@ End-to-end API contract tests for the User Management API, built with TypeScript
 
 ## Test suite baseline & known application defects
 
-The test suite consists of **80 tests defined across 10 spec files**:
+The suite contains **41 Playwright test definitions across 10 spec files**, producing **80 project executions**:
 
-- **Dev environment**: 41 tests (includes cross-namespace isolation tests).
-- **Prod environment**: 39 tests (`environment-isolation.spec.ts` is excluded because it evaluates cross-namespace isolation within a single instance).
+- **Dev environment:** 41 executions, including the two cross-namespace isolation tests.
+- **Prod environment:** 39 executions. `environment-isolation.spec.ts` runs only in dev because its tests directly exercise both `/dev` and `/prod` namespaces within one application instance.
 
 ### Published reports
 
